@@ -17,4 +17,24 @@
  
     </ion-slides>
   </ion-card>
+
+  <ion-grid>
+
+    <ion-row>
+      
+      <ion-slides>
+        <ion-slide *ngFor = "let product of products">
+          <ion-card>
+           <!-- <img *ngIf="product.featured_src" [src]="product.featured_src"/> -->
+            <img [src]="product.featured_src"/>
+            <h1>{{  product.name }}</h1>
+            <p>{{ product.description  }}</p>
+          </ion-card>
+          
+        </ion-slide>
+      </ion-slides>
+    </ion-row>
+
+  </ion-grid> 
+
 </ion-content>
