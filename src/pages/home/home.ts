@@ -19,7 +19,7 @@ export class HomePage {
       consumerSecret: 'cs_0e2023161c545ea747f5a7e8751bfad6acd71f40', // Your consumer secret
       wpAPI: true, // Enable the WP REST API integration
       version: 'wc/v3', // WooCommerce WP REST API version
-      queryStringAuth: true
+      
     });
 
       this.WooCommerce.getAsync("products").then ( 
