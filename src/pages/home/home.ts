@@ -11,11 +11,13 @@ export class HomePage {
 
   WooCommerce: any;
   products: any[];
+  moreProducts: any[];
   
-
   @ViewChild('productSlides') productSlides: Slides;
+  page: number;
 
   constructor(public navCtrl: NavController) {
+    this.page = 1; //Number of page where you fetching the list of products
 
     this.WooCommerce = WC({
     
@@ -27,6 +29,8 @@ export class HomePage {
       
     });
 
+    
+      // Fetch the products from WooCommerce store
       this.WooCommerce.getAsync("products").then ( 
       (data) => { 
        this.products=JSON.parse(data.body);
@@ -34,10 +38,13 @@ export class HomePage {
       }, 
       (err) => { console.log(err); } ); 
 
+      // loading moreProduts method in constructor 
+      //to list the product on home page
+      this.loadMoreProducts();
 
   }
 
-// Adding ionViewDidLoad method for sliding products on home page  
+ // Adding ionViewDidLoad method for sliding products on home page  
   ionViewDidLoad(){
 
     setInterval(()=>{
@@ -51,6 +58,17 @@ export class HomePage {
       
     },3000);
 
+  }
+
+    // Loading more products on home page  
+  loadMoreProducts(){
+
+    this.WooCommerce.getAsync("products?page="+this.page).then ( 
+      (data) => { 
+       this.moreProducts=JSON.parse(data.body);
+       console.log(this.products);
+      }, 
+      (err) => { console.log(err); } ); 
   }
 
 }
