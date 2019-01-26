@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content no-padding>
 
   <ion-card>
   <ion-slides autoplay='2000' pager>
@@ -18,16 +18,18 @@
     </ion-slides>
   </ion-card>
 
+  <img style="margin-top: 10px;" src="./assets/imgs/banner2.jpg" />
+  
   <ion-grid>
 
     <ion-row>
       
-      <ion-slides >
+      <ion-slides #productSlides>
         <ion-slide *ngFor = "let product of products">
-          <ion-card>
-            <img *ngIf="product.images[0]" [src]="product.images[0].src"/>
-            <h1>{{  product.name }}</h1>
-            <p>{{ product.description  }}</p>
+          <ion-card no-padding>
+            <img [src]="product.images[0].src"/>
+            <h1 padding center >{{  product.name }}</h1>
+            <p center padding [innerHTML] ="product.description"></p>
           </ion-card>
           
         </ion-slide>
