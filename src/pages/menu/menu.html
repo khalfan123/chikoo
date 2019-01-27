@@ -10,7 +10,7 @@
         <ion-list-header>
             <ion-label>All Categories</ion-label>
         </ion-list-header>
-        <ion-item *ngFor="let category of categories" text-wrap>
+        <ion-item *ngFor="let category of categories" text-wrap (click)="openCategoryPage(category)" menuClose>
           <ion-icon [name] = "category.icon" item-left large></ion-icon>
           <h2>  {{ category.name  }}  </h2>
         </ion-item>

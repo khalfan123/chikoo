@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { HomePage } from "../home/home";
 import * as WC from 'woocommerce-api';
+import { ProductsByCategoryPage } from "../products-by-category/products-by-category";
 
 @Component({
   selector: 'page-menu',
@@ -11,6 +12,9 @@ export class MenuPage {
   homePage: typeof HomePage;
   WooCommerce: any;
   categories: any[];
+
+  // Fixing - using view child 
+  @ViewChild('content') childNavCtrl: NavController;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.homePage=HomePage;
@@ -29,7 +33,6 @@ export class MenuPage {
     // Fetch the products from WooCommerce store
     this.WooCommerce.getAsync("products/categories").then ( 
     (data) => { 
-      console.log(JSON.parse(data.body));
 
       //Declaring local variable to get the list of categories.
       let temp: any [] = JSON.parse(data.body);
@@ -37,6 +40,9 @@ export class MenuPage {
         if (temp[i].parent == 0) {
           if (temp[i].slug == "vegetables") {
             temp[i].icon = "pizza";
+          }
+          if (temp[i].slug == "fruits") {
+            temp[i].icon = "leaf";
           }
           if (temp[i].slug == "generalproducts") {
             temp[i].icon = "basket";
@@ -54,6 +60,11 @@ export class MenuPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MenuPage');
+  }
+
+   // This function to open the category page
+   openCategoryPage(category){
+    this.childNavCtrl.setRoot(ProductsByCategoryPage, { "category": category  })
   }
 
 }

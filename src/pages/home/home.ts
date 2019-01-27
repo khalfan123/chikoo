@@ -35,7 +35,6 @@ export class HomePage {
       this.WooCommerce.getAsync("products").then ( 
       (data) => { 
        this.products=JSON.parse(data.body);
-       //console.log(this.products);
       }, 
       (err) => { console.log(err); } ); 
 
