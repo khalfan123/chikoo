@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, Slides } from 'ionic-angular';
+import { NavController, Slides, ToastController } from 'ionic-angular';
 
 import * as WC from 'woocommerce-api';
 
@@ -15,8 +15,9 @@ export class HomePage {
   
   @ViewChild('productSlides') productSlides: Slides;
   page: number;
-
-  constructor(public navCtrl: NavController) {
+  
+ 
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController) {
     this.page = 1; //Number of page where you fetching the list of products
 
     this.WooCommerce = WC({
@@ -34,13 +35,13 @@ export class HomePage {
       this.WooCommerce.getAsync("products").then ( 
       (data) => { 
        this.products=JSON.parse(data.body);
-       console.log(this.products);
+       //console.log(this.products);
       }, 
       (err) => { console.log(err); } ); 
 
       // loading moreProduts method in constructor 
       //to list the product on home page
-      this.loadMoreProducts();
+      this.loadMoreProducts(null);
 
   }
 
@@ -61,12 +62,36 @@ export class HomePage {
   }
 
     // Loading more products on home page  
-  loadMoreProducts(){
+  loadMoreProducts(event){
+    if (event == null) {
+      this.page = 1;
+      this.moreProducts = [];
+      
+    } else {
+      this.page ++;
+          
+    }
 
     this.WooCommerce.getAsync("products?page="+this.page).then ( 
       (data) => { 
-       this.moreProducts=JSON.parse(data.body);
-       console.log(this.products);
+       this.moreProducts=this.moreProducts.concat(JSON.parse(data.body));
+            
+       
+       
+       if (event != null ) {
+       
+         event.complete();
+         
+       }
+       //Limit to view the products on home page
+       if (JSON.parse(data.body).length < 10) {
+         event.enable(false);
+
+         this.toastCtrl.create({
+           message: "No more products!",
+           duration: 2000
+         }).present();
+       }
       }, 
       (err) => { console.log(err); } ); 
   }
